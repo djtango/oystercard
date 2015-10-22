@@ -15,8 +15,10 @@ class JourneyLog
 
   def exit_journey(station)
     @jr.finish(station)
-    outstanding_charges
-    add_journey
+    if journey_complete?
+      outstanding_charges
+      add_journey
+    end
   end
 
   def outstanding_charges
