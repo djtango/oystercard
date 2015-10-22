@@ -4,15 +4,15 @@ describe Journey do
 
  let(:station) { double :station }
 
-  describe "#touch_in" do
+  describe "#start" do
    it "should return entry station" do
-    expect(subject.touch_in(station)).to eq station
+    expect(subject.start(station)).to eq station
    end
   end
 
-  describe "#touch_out" do
+  describe "#finish" do
     it "should return exit station" do
-      expect(subject.touch_out(station)).to eq station
+      expect(subject.finish(station)).to eq station
     end
 
   end
@@ -20,11 +20,19 @@ describe Journey do
   describe "#fare" do
     context "when journey is successfully completed" do
       before do
-        subject.touch_in(station)
-        subject.touch_out(station)
+        subject.start(station)
+        subject.finish(station)
       end
       it "charges default fare" do
         expect(subject.fare).to eq Journey::MINIMUM_FARE
+      end
+    end
+    context "when the journey is not completed" do
+      before do
+        subject.finish(station)
+      end
+      it "charges the penalty fare" do
+        expect(subject.fare).to eq Journey::MAXIMUM_FARE
       end
     end
   end
@@ -32,8 +40,8 @@ describe Journey do
   describe "#complete?" do
     context "when touching in and touching out is successful"
       before do
-        subject.touch_in(station)
-        subject.touch_out(station)
+        subject.start(station)
+        subject.finish(station)
       end
       it "will return true" do
         expect(subject.complete?).to eq true

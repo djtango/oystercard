@@ -9,25 +9,20 @@ class Journey
   end
 
 
-  def touch_in(station)
+  def start(station)
     @entry_station = station
   end
 
-  def touch_out(station)
+  def finish(station)
     @exit_station = station
-
   end
 
   def fare
-    if complete?
-      fare = MINIMUM_FARE
-    else
-      fare = MAXIMUM_FARE
-    end
+    complete? ? MINIMUM_FARE : MAXIMUM_FARE
   end
 
   def complete?
-    @entry_station != nil && @exit_station != nil ? true : false
+    @entry_station && @exit_station || @entry_station.nil? && @exit_station.nil? ? true : false
   end
 
 end
