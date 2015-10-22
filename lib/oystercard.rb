@@ -2,7 +2,7 @@ require_relative 'journeylog'
 require_relative 'station'
 
 class Oystercard
-  attr_reader :balance, :history, :journey
+  attr_reader :balance, :history, :journey, :jlog
   MINIMUM_FARE = 1
   DEFAULT_BALANCE = 0
   LIMIT = 90

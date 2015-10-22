@@ -34,3 +34,24 @@ card.touch_in(station1)
 card.entry_station #expect to be station1
 card.touch_out
 card.entry_station #expect to be nil
+
+
+oc = Oystercard.new
+station = Station.new(1,:holborn)
+station2 = Station.new(1,:aldgate)
+oc.top_up(10)
+oc.touch_in(station)
+oc.touch_out(station2)
+oc.balance
+oc.jlog.journeys
+
+oc.touch_in(station)
+oc.touch_in(station2)
+oc.jlog.journeys
+oc.balance
+
+oc.top_up(10)
+oc.touch_out(station)
+oc.touch_out(station2)
+oc.jlog.journeys
+oc.balance

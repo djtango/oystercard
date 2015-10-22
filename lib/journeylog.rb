@@ -1,4 +1,6 @@
+require_relative 'journey'
 class JourneyLog
+  attr_reader :journeys
   def initialize(journey_klass: Journey)
     @journey_klass = journey_klass
     @jr = @journey_klass.new
@@ -33,7 +35,7 @@ class JourneyLog
 
   private
 
-  attr_reader :journey_klass, :jr, :journeys
+  attr_reader :journey_klass, :jr
 
   def current_journey
     @jr.complete? ? @jr = @journey_klass.new : @jr
