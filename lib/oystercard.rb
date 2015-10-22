@@ -1,4 +1,6 @@
-require_relative 'journey'
+require_relative 'journeylog'
+require_relative 'station'
+
 class Oystercard
   attr_reader :balance, :history, :journey
   MINIMUM_FARE = 1
