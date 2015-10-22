@@ -4,10 +4,9 @@ class Oystercard
   MINIMUM_FARE = 1
   DEFAULT_BALANCE = 0
   LIMIT = 90
-  def initialize (balance=DEFAULT_BALANCE)
+  def initialize (balance=DEFAULT_BALANCE, journeylog_klass: JourneyLog)
     @balance = balance
-    @history = []
-    @journey = Journey.new
+    @jlog = journeylog_klass.new
   end
 
   def top_up(num)
@@ -17,18 +16,17 @@ class Oystercard
 
   def touch_in(station)
     fail "Unable to touch in: insufficient balance" if insufficient_balance?
-    deduct unless @journey.complete?
-    @journey.start(station)
+    deduct unless @jlog.journey_complete?
+    @jlog.start_journey(station)
   end
 
   def touch_out(station)
-    @journey.finish(station)
+    @jlog.exit_journey(station)
     deduct
-    log_journey
   end
 
   # def in_journey?
-  #   @journey.entry_station ? true : false
+  #   @jlog.entry_station ? true : false
   # end
 
 private
@@ -42,12 +40,7 @@ private
   end
 
   def deduct
-    @balance -= @journey.fare
-  end
-
-  def log_journey
-    @history << @journey
-    @journey = Journey.new
+    @balance -= @jlog.outstanding_charges
   end
 
 end
